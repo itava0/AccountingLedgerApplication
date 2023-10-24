@@ -81,6 +81,43 @@ public class Ledger {
         }
     }
 
+    public static void displayReports() throws IOException {
+
+        // display method for displaying the ledger menu
+        System.out.println("\t(1) - Month To Date");
+        System.out.println("\t(2) - Previous Month");
+        System.out.println("\t(3) - Year To Date");
+        System.out.println("\t(4) - Previous Year");
+        System.out.println("\t(5) - Search by Vendor");
+        System.out.println("\t(0) - Back to the ledger screen");
+        System.out.print("Enter # Choice: ");
+        int userInput = SCANNER.nextInt();
+        SCANNER.nextLine();
+
+
+        switch (userInput){
+            case 1:
+                monthToDateReport();
+                break;
+            case 2:
+                previousMonthReport();
+                break;
+            case 3:
+                yearToDateReport();
+                break;
+            case 4:
+                previousYearReport();
+                break;
+            case 5:
+                searchByVendorReport();
+                break;
+            case 0:
+                display();
+
+        }
+
+
+    }
 
 
 }
