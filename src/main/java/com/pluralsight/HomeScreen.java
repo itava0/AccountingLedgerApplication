@@ -5,14 +5,14 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HomeScreen {
 
     public static Scanner SCANNER = new Scanner(System.in);
 
-    public static HashMap<String, Transaction> TRANSACTION = new HashMap<>();
+    public static ArrayList<Transaction> TRANSACTION = new ArrayList<>();
 
     public static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -78,7 +78,7 @@ public class HomeScreen {
                 // Check for empty or non-numeric amount field
                 if (!transactionList[4].isEmpty()) {
                     transactionAmount = Double.parseDouble(transactionList[4]);
-                    TRANSACTION.put(transactionDes, new Transaction(transactionDate, transactionTime, transactionDes, transactionVendor, transactionAmount));
+                    TRANSACTION.add(new Transaction(transactionDate, transactionTime, transactionDes, transactionVendor, transactionAmount));
                 }
             }
         }
