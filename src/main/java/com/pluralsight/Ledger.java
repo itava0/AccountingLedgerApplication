@@ -68,5 +68,19 @@ public class Ledger {
         }
     }
 
+    public static void displayPayments() {
+        // Display payments in the ledger
+
+        // Iterate through transactions and display those that match amount < 0
+        for(Transaction t : TRANSACTION.values()) {
+            if(t.amount < 0) {
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f\n",
+                        t.getDate(), t.getTime(), t.getDescription(),
+                        t.getVendor(), t.getAmount());
+            }
+        }
+    }
+
+
 
 }
