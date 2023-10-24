@@ -3,13 +3,23 @@ package com.pluralsight;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 import static com.pluralsight.HomeScreen.SCANNER;
 import static com.pluralsight.HomeScreen.TRANSACTION;
 
 public class Ledger {
 
+    public static ArrayList<Transaction> sortedTransaction = TRANSACTION;
+
     public static void display() throws IOException {
+
+        // Sort in descending order using a custom comparator
+        sortedTransaction.sort(Collections.reverseOrder(Comparator.comparing(Transaction::getDate)));
+
 
         // display method for displaying the ledger menu
 
@@ -50,7 +60,7 @@ public class Ledger {
         // Display all transactions in the ledger
 
         // Iterate through transactions and display all the values
-        for (Transaction  t : TRANSACTION.values()) {
+        for (Transaction  t : sortedTransaction) {
             System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                     t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
         }
@@ -60,7 +70,7 @@ public class Ledger {
         // Display deposits in the ledger
 
         // Iterate through transactions and display those that match amount > 0
-        for(Transaction t : TRANSACTION.values()) {
+        for(Transaction t : sortedTransaction) {
             if(t.amount > 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -72,7 +82,7 @@ public class Ledger {
         // Display payments in the ledger
 
         // Iterate through transactions and display those that match amount < 0
-        for(Transaction t : TRANSACTION.values()) {
+        for(Transaction t : sortedTransaction) {
             if(t.amount < 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(),
@@ -126,7 +136,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those in the current month
-        for (Transaction t : TRANSACTION.values()) {
+        for (Transaction t : sortedTransaction) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the current month
@@ -155,7 +165,7 @@ public class Ledger {
         System.out.println("***************************");
 
         // Iterate through transactions and display those in the previous month
-        for (Transaction t : TRANSACTION.values()) {
+        for (Transaction t : sortedTransaction) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the previous month
@@ -180,7 +190,7 @@ public class Ledger {
         System.out.println("************************");
 
         // Iterate through transactions and display those in the current year
-        for (Transaction t : TRANSACTION.values()) {
+        for (Transaction t : sortedTransaction) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the current year
@@ -207,7 +217,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those in the previous year
-        for (Transaction t : TRANSACTION.values()) {
+        for (Transaction t : sortedTransaction) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the previous year
@@ -231,7 +241,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those that match the vendor
-        for (Transaction t : TRANSACTION.values()) {
+        for (Transaction t : sortedTransaction) {
             if (t.getVendor().equalsIgnoreCase(searchVendor)) {
                 // Display transaction details
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
