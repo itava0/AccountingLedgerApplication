@@ -140,4 +140,32 @@ public class Ledger {
 
     }
 
+    private static void previousMonthReport() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Calculate the start date of the previous month
+        LocalDate startDateOfPreviousMonth = currentDate.minusMonths(1).withDayOfMonth(1);
+
+        // Calculate the end date of the previous month
+        LocalDate endDateOfPreviousMonth = currentDate.withDayOfMonth(1).minusDays(1);
+
+
+        System.out.println("Previous Month Report");
+        System.out.println("***************************");
+
+        // Iterate through transactions and display those in the previous month
+        for (Transaction t : TRANSACTION.values()) {
+            LocalDate transactionDate = t.getDate();
+
+            // Check if the transaction occurred in the previous month
+            if (transactionDate.isAfter(startDateOfPreviousMonth) && transactionDate.isBefore(endDateOfPreviousMonth)) {
+                // Display transaction details
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            }
+        }
+
+    }
+
 }
