@@ -34,7 +34,7 @@ public class HomeScreen {
             System.out.println("\t(X) - Exit");
 
             System.out.print("Enter a Choice: ");
-            String userChoice = SCANNER.next().trim().toUpperCase();
+            String userChoice = SCANNER.nextLine().trim().toUpperCase();
 
             switch (userChoice) {
                 case "D":
@@ -92,10 +92,10 @@ public class HomeScreen {
         // It collects information like description, vendor, and amount from the user.
 
         System.out.print("What's the name of the deposit?  ");
-        String description = SCANNER.next().trim();
+        String description = SCANNER.nextLine().trim();
 
         System.out.print("What's the name of the vendor? ");
-        String vendor = SCANNER.next().trim();
+        String vendor = SCANNER.nextLine().trim();
 
         System.out.print("What's the amount? ");
         double amount = SCANNER.nextDouble();
@@ -117,10 +117,10 @@ public class HomeScreen {
         // It collects information like description, vendor, and amount (negative for payment) from the user.
 
         System.out.print("What's name of the item you're purchasing? ");
-        String description = SCANNER.next().trim();
+        String description = SCANNER.nextLine().trim();
 
         System.out.print("What's the name of the vendor/company? ");
-        String vendor = SCANNER.next().trim();
+        String vendor = SCANNER.nextLine().trim();
 
         System.out.print("What's the amount? ");
         double amount = SCANNER.nextDouble();

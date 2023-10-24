@@ -32,7 +32,7 @@ public class Ledger {
             System.out.println("\t(H) - Home");
 
             System.out.print("Enter a Choice: ");
-            String userChoice = SCANNER.next().trim().toUpperCase();
+            String userChoice = SCANNER.nextLine().trim().toUpperCase();
 
             switch (userChoice) {
                 case "A":
@@ -71,7 +71,7 @@ public class Ledger {
 
         // Iterate through transactions and display those that match amount > 0
         for(Transaction t : sortedTransaction) {
-            if(t.amount > 0) {
+            if(t.getAmount() > 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
             }
@@ -83,7 +83,7 @@ public class Ledger {
 
         // Iterate through transactions and display those that match amount < 0
         for(Transaction t : sortedTransaction) {
-            if(t.amount < 0) {
+            if(t.getAmount() < 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(),
                         t.getVendor(), t.getAmount());
