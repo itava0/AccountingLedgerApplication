@@ -83,7 +83,7 @@ public class Ledger {
 
     public static void displayReports() throws IOException {
 
-        // display method for displaying the ledger menu
+        // display method for displaying the report menu
         System.out.println("\t(1) - Month To Date");
         System.out.println("\t(2) - Previous Month");
         System.out.println("\t(3) - Year To Date");
@@ -193,4 +193,50 @@ public class Ledger {
 
     }
 
+    private static void previousYearReport() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Calculate the start date of the previous year (January 1 of the previous year)
+        LocalDate startDateOfPreviousYear = LocalDate.of(currentDate.getYear() - 1, Month.JANUARY, 1);
+
+        // Calculate the end date of the previous year (December 31 of the previous year)
+        LocalDate endDateOfPreviousYear = LocalDate.of(currentDate.getYear() - 1, Month.DECEMBER, 31);
+
+        System.out.println("Previous Year Report");
+        System.out.println("*************************");
+
+        // Iterate through transactions and display those in the previous year
+        for (Transaction t : TRANSACTION.values()) {
+            LocalDate transactionDate = t.getDate();
+
+            // Check if the transaction occurred in the previous year
+            if (transactionDate.isEqual(startDateOfPreviousYear) || (transactionDate.isAfter(startDateOfPreviousYear) && transactionDate.isBefore(endDateOfPreviousYear))) {
+                // Display transaction details
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            }
+        }
+
+    }
+
+
+    private static void searchByVendorReport() {
+        // Prompt the user to enter the vendor they want to search for
+        System.out.print("Enter a vendor name to search: ");
+        String searchVendor = SCANNER.nextLine();
+
+
+        System.out.println("Search by Vendor Report");
+        System.out.println("*************************");
+
+        // Iterate through transactions and display those that match the vendor
+        for (Transaction t : TRANSACTION.values()) {
+            if (t.getVendor().equalsIgnoreCase(searchVendor)) {
+                // Display transaction details
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            }
+        }
+    }
 }
