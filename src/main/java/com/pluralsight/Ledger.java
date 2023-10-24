@@ -168,4 +168,29 @@ public class Ledger {
 
     }
 
+    private static void yearToDateReport() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Calculate the start date of the current year (January 1 of the current year)
+        LocalDate startDateOfYear = LocalDate.of(currentDate.getYear(), Month.JANUARY, 1);
+
+
+        System.out.println("Year-to-Date Report");
+        System.out.println("************************");
+
+        // Iterate through transactions and display those in the current year
+        for (Transaction t : TRANSACTION.values()) {
+            LocalDate transactionDate = t.getDate();
+
+            // Check if the transaction occurred in the current year
+            if (transactionDate.isEqual(startDateOfYear) || transactionDate.isAfter(startDateOfYear)) {
+                // Display transaction details
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            }
+        }
+
+    }
+
 }
