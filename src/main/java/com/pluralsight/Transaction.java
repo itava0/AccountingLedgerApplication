@@ -6,15 +6,15 @@ import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
-    LocalDate date;
+    private LocalDate date;
 
-    LocalTime time;
+    private LocalTime time;
 
-    String description;
+    private String description;
 
-    String vendor;
+    private String vendor;
 
-    Double amount;
+    private Double amount;
 
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss");
 
