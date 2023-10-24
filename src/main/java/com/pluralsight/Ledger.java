@@ -1,6 +1,8 @@
 package com.pluralsight;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 
 import static com.pluralsight.HomeScreen.SCANNER;
 import static com.pluralsight.HomeScreen.TRANSACTION;
@@ -8,6 +10,8 @@ import static com.pluralsight.HomeScreen.TRANSACTION;
 public class Ledger {
 
     public static void display() throws IOException {
+
+        // display method for displaying the ledger menu
 
         while (true) {
             System.out.println("How can we help you today?");
@@ -31,7 +35,7 @@ public class Ledger {
                     displayPayments();
                     break;
                 case "R":
-                    // Implement reports logic
+                    displayReports();
                     break;
                 case "H":
                     HomeScreen.display();
@@ -43,28 +47,13 @@ public class Ledger {
     }
 
     public static void displayALL() {
+        // Display all transactions in the ledger
+
+        // Iterate through transactions and display all the values
         for (Transaction  t : TRANSACTION.values()) {
             System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                     t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
         }
     }
 
-    public static void displayDeposit() {
-        for(Transaction t : TRANSACTION.values()) {
-            if(t.amount > 0) {
-                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
-                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
-            }
-        }
-    }
-
-    public static void displayPayments() {
-        for(Transaction t : TRANSACTION.values()) {
-            if(t.amount < 0) {
-                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f\n",
-                        t.getDate(), t.getTime(), t.getDescription(),
-                        t.getVendor(), t.getAmount());
-            }
-        }
-    }
 }
