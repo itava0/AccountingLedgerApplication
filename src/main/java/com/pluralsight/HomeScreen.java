@@ -19,6 +19,10 @@ public class HomeScreen {
     public static DecimalFormat df = new DecimalFormat("0.00");
 
     public static void display() throws IOException {
+        // This method represents the main screen for your application.
+        // It allows the user to perform different actions.
+
+        // First, it reads transactions from a CSV file to populate the TRANSACTION HashMap.
         readTransactions();
 
         while (true) {
@@ -49,11 +53,12 @@ public class HomeScreen {
                     System.out.println("Invalid choice. Please try again.");
             }
         }
-
     }
 
     public static void readTransactions() throws IOException {
-        // Read product information from a CSV file and populate the inventory
+        // This method reads transactions from a CSV file and populates the TRANSACTION HashMap.
+        // It uses a BufferedReader to read data line by line from the CSV file.
+
         BufferedReader readFile = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
         String input;
         LocalDate transactionDate;
@@ -83,6 +88,9 @@ public class HomeScreen {
     }
 
     public static void addDeposit() throws IOException {
+        // This method allows the user to add a deposit entry to the CSV file.
+        // It collects information like description, vendor, and amount from the user.
+
         System.out.print("What's the name of the deposit?  ");
         String description = SCANNER.next().trim();
 
@@ -99,12 +107,16 @@ public class HomeScreen {
         String date = String.valueOf(LocalDate.now());
         String time = fmt.format(LocalTime.now());
 
+        // Write the deposit entry to the CSV file
         bufferedWriter.write( date + "|" + time + "|"  + description + "|" + vendor + "|" + amountFormatted +"\n");
         bufferedWriter.close();
     }
 
     public static void makePayment() throws IOException {
-        System.out.print("What's name of the item your purchasing? ");
+        // This method allows the user to make a payment entry to the CSV file.
+        // It collects information like description, vendor, and amount (negative for payment) from the user.
+
+        System.out.print("What's name of the item you're purchasing? ");
         String description = SCANNER.next().trim();
 
         System.out.print("What's the name of the vendor/company? ");
@@ -113,18 +125,18 @@ public class HomeScreen {
         System.out.print("What's the amount? ");
         double amount = SCANNER.nextDouble();
         SCANNER.nextLine();
-        amount *= -1;
+        amount *= -1; // Convert to a negative amount for payment
         String amountFormatted = df.format(amount);
-
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
 
         String date = String.valueOf(LocalDate.now());
         String time = fmt.format(LocalTime.now());
 
+        // Write the payment entry to the CSV file
         bufferedWriter.write( date + "|" + time + "|"  + description + "|" + vendor + "|" + amountFormatted  +"\n");
 
         bufferedWriter.close();
     }
-
 }
+
