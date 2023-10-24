@@ -118,6 +118,26 @@ public class Ledger {
 
 
     }
+    private static void monthToDateReport() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
 
+        System.out.println("Month-to-Date Report");
+        System.out.println("*************************");
+
+        // Iterate through transactions and display those in the current month
+        for (Transaction t : TRANSACTION.values()) {
+            LocalDate transactionDate = t.getDate();
+
+            // Check if the transaction occurred in the current month
+            if (transactionDate.getYear() == currentDate.getYear() &&
+                    transactionDate.getMonth() == currentDate.getMonth()) {
+                // Display transaction details
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            }
+        }
+
+    }
 
 }
