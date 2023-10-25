@@ -13,12 +13,12 @@ import static com.pluralsight.HomeScreen.TRANSACTION;
 
 public class Ledger {
 
-    public static ArrayList<Transaction> sortedTransaction = TRANSACTION;
+    public static ArrayList<Transaction> TRANSACTIONS_ARRAYLIST = TRANSACTION;
 
     public static void display() throws IOException {
 
         // Sort in descending order using a custom comparator
-        sortedTransaction.sort(Collections.reverseOrder(Comparator.comparing(Transaction::getDate)));
+        TRANSACTIONS_ARRAYLIST.sort(Collections.reverseOrder(Comparator.comparing(Transaction::getDate)));
 
 
         // display method for displaying the ledger menu
@@ -49,9 +49,9 @@ public class Ledger {
                     break;
                 case "H":
                     HomeScreen.display();
-                    break; // Exit the loop when returning to the home screen
+                    return; // Exit the loop when returning to the home screen
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid choice. Please try again. ");
             }
         }
     }
@@ -60,7 +60,7 @@ public class Ledger {
         // Display all transactions in the ledger
 
         // Iterate through transactions and display all the values
-        for (Transaction  t : sortedTransaction) {
+        for (Transaction  t : TRANSACTIONS_ARRAYLIST) {
             System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                     t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
         }
@@ -70,7 +70,7 @@ public class Ledger {
         // Display deposits in the ledger
 
         // Iterate through transactions and display those that match amount > 0
-        for(Transaction t : sortedTransaction) {
+        for(Transaction t : TRANSACTIONS_ARRAYLIST) {
             if(t.getAmount() > 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -82,7 +82,7 @@ public class Ledger {
         // Display payments in the ledger
 
         // Iterate through transactions and display those that match amount < 0
-        for(Transaction t : sortedTransaction) {
+        for(Transaction t : TRANSACTIONS_ARRAYLIST) {
             if(t.getAmount() < 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(),
@@ -93,42 +93,45 @@ public class Ledger {
 
     public static void displayReports() throws IOException {
 
-        // display method for displaying the report menu
-        System.out.println("\t(1) - Month To Date");
-        System.out.println("\t(2) - Previous Month");
-        System.out.println("\t(3) - Year To Date");
-        System.out.println("\t(4) - Previous Year");
-        System.out.println("\t(5) - Search by Vendor");
-        System.out.println("\t(0) - Back to the ledger screen");
-        System.out.print("Enter # Choice: ");
-        int userInput = SCANNER.nextInt();
-        SCANNER.nextLine();
+        while (true) {
+            // display method for displaying the report menu
+            System.out.println("\t(1) - Month To Date");
+            System.out.println("\t(2) - Previous Month");
+            System.out.println("\t(3) - Year To Date");
+            System.out.println("\t(4) - Previous Year");
+            System.out.println("\t(5) - Search by Vendor");
+            System.out.println("\t(0) - Back to the ledger screen");
+            System.out.print("Enter # Choice: ");
+            int userInput = SCANNER.nextInt();
+            SCANNER.nextLine();
 
 
-        switch (userInput){
-            case 1:
-                monthToDateReport();
-                break;
-            case 2:
-                previousMonthReport();
-                break;
-            case 3:
-                yearToDateReport();
-                break;
-            case 4:
-                previousYearReport();
-                break;
-            case 5:
-                searchByVendorReport();
-                break;
-            case 0:
-                display();
+            switch (userInput) {
+                case 1:
+                    getMonthToDateReport();
+                    break;
+                case 2:
+                    getPreviousMonthReport();
+                    break;
+                case 3:
+                    getYearToDateReport();
+                    break;
+                case 4:
+                    getPreviousYearReport();
+                    break;
+                case 5:
+                    searchByVendorReport();
+                    break;
+                case 0:
+                    display();
+                    return;
 
+            }
         }
 
 
     }
-    private static void monthToDateReport() {
+    private static void getMonthToDateReport() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -136,7 +139,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those in the current month
-        for (Transaction t : sortedTransaction) {
+        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the current month
@@ -150,7 +153,7 @@ public class Ledger {
 
     }
 
-    private static void previousMonthReport() {
+    private static void getPreviousMonthReport() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -165,7 +168,7 @@ public class Ledger {
         System.out.println("***************************");
 
         // Iterate through transactions and display those in the previous month
-        for (Transaction t : sortedTransaction) {
+        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the previous month
@@ -178,7 +181,7 @@ public class Ledger {
 
     }
 
-    private static void yearToDateReport() {
+    private static void getYearToDateReport() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -190,7 +193,7 @@ public class Ledger {
         System.out.println("************************");
 
         // Iterate through transactions and display those in the current year
-        for (Transaction t : sortedTransaction) {
+        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the current year
@@ -203,7 +206,7 @@ public class Ledger {
 
     }
 
-    private static void previousYearReport() {
+    private static void getPreviousYearReport() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -217,7 +220,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those in the previous year
-        for (Transaction t : sortedTransaction) {
+        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the previous year
@@ -241,7 +244,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those that match the vendor
-        for (Transaction t : sortedTransaction) {
+        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
             if (t.getVendor().equalsIgnoreCase(searchVendor)) {
                 // Display transaction details
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
