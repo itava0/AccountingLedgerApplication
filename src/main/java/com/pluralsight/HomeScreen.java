@@ -14,12 +14,12 @@ public class HomeScreen {
 
     public static ArrayList<Transaction> TRANSACTION = new ArrayList<>();
 
-    public static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static DateTimeFormatter FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    public static DecimalFormat df = new DecimalFormat("0.00");
+    public static DecimalFormat DF = new DecimalFormat("0.00");
 
     public static void display() throws IOException {
-        // This method represents the main screen for your application.
+        // This method represents the main screen for the application.
         // It allows the user to perform different actions.
 
         // First, it reads transactions from a CSV file to populate the TRANSACTION HashMap.
@@ -100,12 +100,12 @@ public class HomeScreen {
         System.out.print("What's the amount? ");
         double amount = SCANNER.nextDouble();
         SCANNER.nextLine();
-        String amountFormatted = df.format(amount);
+        String amountFormatted = DF.format(amount);
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
 
         String date = String.valueOf(LocalDate.now());
-        String time = fmt.format(LocalTime.now());
+        String time = FMT.format(LocalTime.now());
 
         // Write the deposit entry to the CSV file
         bufferedWriter.write( date + "|" + time + "|"  + description + "|" + vendor + "|" + amountFormatted +"\n");
@@ -126,12 +126,12 @@ public class HomeScreen {
         double amount = SCANNER.nextDouble();
         SCANNER.nextLine();
         amount *= -1; // Convert to a negative amount for payment
-        String amountFormatted = df.format(amount);
+        String amountFormatted = DF.format(amount);
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
 
         String date = String.valueOf(LocalDate.now());
-        String time = fmt.format(LocalTime.now());
+        String time = FMT.format(LocalTime.now());
 
         // Write the payment entry to the CSV file
         bufferedWriter.write( date + "|" + time + "|"  + description + "|" + vendor + "|" + amountFormatted  +"\n");
