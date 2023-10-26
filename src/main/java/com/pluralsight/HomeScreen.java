@@ -22,7 +22,7 @@ public class HomeScreen {
         // This method represents the main screen for the application.
         // It allows the user to perform different actions.
 
-        // First, it reads transactions from a CSV file to populate the TRANSACTION HashMap.
+        // First, it reads transactions from a CSV file to populate the TRANSACTION ArrayList.
         readTransactions();
 
         while (true) {
@@ -100,16 +100,21 @@ public class HomeScreen {
             System.out.print("What's the name of the vendor? ");
             String vendor = SCANNER.nextLine().trim();
 
-            System.out.print("What's the amount?");
+            System.out.print("What's the amount? ");
 
+            double amount;
             // Check if the user entered a valid double (numeric) value.
             if (!SCANNER.hasNextDouble()) {
-                System.out.println("You did not enter a number.");
-                SCANNER.nextLine();
-                addDeposit(); // Recursively call the method to retry input.
+
+                System.out.println("Please enter a number.");
+
+                SCANNER.nextLine(); // Consume the newline character.
+
+                System.out.print("What's the amount? ");// ask for the amount again
             }
-            double amount = SCANNER.nextDouble();
-            SCANNER.nextLine(); // Consume the newline character.
+            amount = SCANNER.nextDouble();
+            SCANNER.nextLine();
+
 
             String amountFormatted = DF.format(amount);
 
@@ -129,7 +134,7 @@ public class HomeScreen {
             // Write the deposit entry to the CSV file in the specified format.
             bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amountFormatted + "\n");
 
-            System.out.println("Deposit has been recorded! \n Would you like to enter another deposit? Yes or No? ");
+            System.out.println("Deposit has been recorded! \nWould you like to enter another deposit? Yes or No? ");
             String userInput = SCANNER.nextLine().trim();
 
             // Check if the user wants to enter another deposit.
@@ -154,15 +159,19 @@ public class HomeScreen {
             System.out.print("What's the name of the vendor? ");
             String vendor = SCANNER.nextLine().trim();
 
-            System.out.print("What's the amount?");
+            System.out.print("What's the amount? ");
 
-            // Check if the user entered a valid number value.
+            double amount;
+            // Check if the user entered a valid double (numeric) value.
             if (!SCANNER.hasNextDouble()) {
-                System.out.println("You did not enter a number. ");
-                SCANNER.nextLine();
-                addDeposit(); // Recursively call the method to retry input.
+
+                System.out.println("Please enter a number.");
+
+                SCANNER.nextLine(); // Consume the newline character.
+
+                System.out.print("What's the amount? ");// ask for the amount again
             }
-            double amount = SCANNER.nextDouble();
+            amount = SCANNER.nextDouble();
             amount *= -1; //converts amount into a negative amount since it is a payment
             SCANNER.nextLine(); // Consume the newline character.
 
