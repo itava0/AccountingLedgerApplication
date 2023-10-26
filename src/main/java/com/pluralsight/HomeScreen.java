@@ -44,7 +44,7 @@ public class HomeScreen {
                     makePayment();
                     break;
                 case "L":
-                    Ledger.display();
+                    LedgerScreen.display();
                     break;
                 case "X":
                     SCANNER.close();
@@ -58,6 +58,8 @@ public class HomeScreen {
     public static void readTransactions() throws IOException {
         // This method reads transactions from a CSV file and populates the TRANSACTION HashMap.
         // It uses a BufferedReader to read data line by line from the CSV file.
+
+        TRANSACTION.clear();// Removes all values from it
 
         BufferedReader readFile = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
         String input;
@@ -88,55 +90,109 @@ public class HomeScreen {
     }
 
     public static void addDeposit() throws IOException {
-        // This method allows the user to add a deposit entry to the CSV file.
+        // This method allows the user to add a deposit entry to a CSV file.
         // It collects information like description, vendor, and amount from the user.
 
-        System.out.print("What's the name of the deposit?  ");
-        String description = SCANNER.nextLine().trim();
+        while (true) {
+            System.out.print("What's the name of the deposit?  ");
+            String description = SCANNER.nextLine().trim();
 
-        System.out.print("What's the name of the vendor? ");
-        String vendor = SCANNER.nextLine().trim();
+            System.out.print("What's the name of the vendor? ");
+            String vendor = SCANNER.nextLine().trim();
 
-        System.out.print("What's the amount? ");
-        double amount = SCANNER.nextDouble();
-        SCANNER.nextLine();
-        String amountFormatted = DF.format(amount);
+            System.out.print("What's the amount?");
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+            // Check if the user entered a valid double (numeric) value.
+            if (!SCANNER.hasNextDouble()) {
+                System.out.println("You did not enter a number.");
+                SCANNER.nextLine();
+                addDeposit(); // Recursively call the method to retry input.
+            }
+            double amount = SCANNER.nextDouble();
+            SCANNER.nextLine(); // Consume the newline character.
 
-        String date = String.valueOf(LocalDate.now());
-        String time = FMT.format(LocalTime.now());
+            String amountFormatted = DF.format(amount);
 
-        // Write the deposit entry to the CSV file
-        bufferedWriter.write( date + "|" + time + "|"  + description + "|" + vendor + "|" + amountFormatted +"\n");
-        bufferedWriter.close();
+            // Check if either description or vendor fields are empty.
+            if (description.isEmpty() || vendor.isEmpty()) {
+                System.out.println("Please, answer all the prompts ");
+                addDeposit(); // Recursively call the method to retry input.
+            }
+
+            // Open a BufferedWriter to append to the transactions.csv file.
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+
+            // Get the current date and time.
+            String date = String.valueOf(LocalDate.now());
+            String time = FMT.format(LocalTime.now());
+
+            // Write the deposit entry to the CSV file in the specified format.
+            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amountFormatted + "\n");
+
+            System.out.println("Deposit has been recorded! \n Would you like to enter another deposit? Yes or No? ");
+            String userInput = SCANNER.nextLine().trim();
+
+            // Check if the user wants to enter another deposit.
+            if (userInput.equalsIgnoreCase("no")) {
+                bufferedWriter.close(); // Close the BufferedWriter.
+                return;
+            }
+
+            bufferedWriter.close(); // Close the BufferedWriter.
+        }
     }
+
 
     public static void makePayment() throws IOException {
         // This method allows the user to make a payment entry to the CSV file.
         // It collects information like description, vendor, and amount (negative for payment) from the user.
 
-        System.out.print("What's name of the item you're purchasing? ");
-        String description = SCANNER.nextLine().trim();
+        while (true) {
+            System.out.print("What's the name of the deposit?  ");
+            String description = SCANNER.nextLine().trim();
 
-        System.out.print("What's the name of the vendor/company? ");
-        String vendor = SCANNER.nextLine().trim();
+            System.out.print("What's the name of the vendor? ");
+            String vendor = SCANNER.nextLine().trim();
 
-        System.out.print("What's the amount? ");
-        double amount = SCANNER.nextDouble();
-        SCANNER.nextLine();
-        amount *= -1; // Convert to a negative amount for payment
-        String amountFormatted = DF.format(amount);
+            System.out.print("What's the amount?");
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+            // Check if the user entered a valid number value.
+            if (!SCANNER.hasNextDouble()) {
+                System.out.println("You did not enter a number. ");
+                SCANNER.nextLine();
+                addDeposit(); // Recursively call the method to retry input.
+            }
+            double amount = SCANNER.nextDouble();
+            amount *= -1; //converts amount into a negative amount since it is a payment
+            SCANNER.nextLine(); // Consume the newline character.
 
-        String date = String.valueOf(LocalDate.now());
-        String time = FMT.format(LocalTime.now());
+            String amountFormatted = DF.format(amount);
 
-        // Write the payment entry to the CSV file
-        bufferedWriter.write( date + "|" + time + "|"  + description + "|" + vendor + "|" + amountFormatted  +"\n");
+            // Check if either description or vendor fields are empty.
+            if (description.isEmpty() || vendor.isEmpty()) {
+                System.out.println("Please, answer all the prompts ");
+                makePayment(); // Recursively call the method to retry input.
+            }
 
-        bufferedWriter.close();
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true));
+
+            String date = String.valueOf(LocalDate.now());
+            String time = FMT.format(LocalTime.now());
+
+            // Write the payment entry to the CSV file
+            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amountFormatted + "\n");
+
+            System.out.println("Payment has been recorded! \n Would you like to enter another Payment? Yes or No? ");
+            String userInput = SCANNER.nextLine().trim();
+
+            // Check if the user wants to enter another payment.
+            if (userInput.equalsIgnoreCase("no")) {
+                bufferedWriter.close(); // Close the BufferedWriter.
+                return;
+            }
+
+            bufferedWriter.close(); // Close the BufferedWriter.
+        }
     }
 }
 
