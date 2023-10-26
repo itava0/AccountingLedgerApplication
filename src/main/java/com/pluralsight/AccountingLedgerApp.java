@@ -2,7 +2,7 @@ package com.pluralsight;
 
 import java.io.IOException;
 
-public class Main {
+public class AccountingLedgerApp {
     public static void main(String[] args) throws IOException {
         HomeScreen.display();
     }
