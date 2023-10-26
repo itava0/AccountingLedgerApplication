@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -37,6 +38,8 @@ public class Transaction {
     public String getTime() {
         return time.format(fmt);
     }
+
+    public LocalDateTime getDateTime() {return LocalDateTime.of(this.getDate(), LocalTime.parse(this.getTime())); }
 
     public void setTime(LocalTime time) {
         this.time = time;
