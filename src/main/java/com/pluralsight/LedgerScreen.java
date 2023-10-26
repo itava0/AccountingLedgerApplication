@@ -3,7 +3,6 @@ package com.pluralsight;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -11,15 +10,15 @@ import java.util.Comparator;
 import static com.pluralsight.HomeScreen.SCANNER;
 import static com.pluralsight.HomeScreen.TRANSACTION;
 
-public class Ledger {
-
-    public static ArrayList<Transaction> TRANSACTIONS_ARRAYLIST = TRANSACTION;
+public class LedgerScreen {
 
     public static void display() throws IOException {
 
-        // Sort in descending order using a custom comparator
-        TRANSACTIONS_ARRAYLIST.sort(Collections.reverseOrder(Comparator.comparing(Transaction::getDate)));
+        //read transactions file to shows new entries
+        HomeScreen.readTransactions();
 
+        // Sort in descending order using a custom comparator by comparing the LocalDateTime of each object
+        TRANSACTION.sort(Collections.reverseOrder(Comparator.comparing(Transaction::getDateTime)));
 
         // display method for displaying the ledger menu
 
@@ -60,7 +59,7 @@ public class Ledger {
         // Display all transactions in the ledger
 
         // Iterate through transactions and display all the values
-        for (Transaction  t : TRANSACTIONS_ARRAYLIST) {
+        for (Transaction  t : TRANSACTION) {
             System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                     t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
         }
@@ -70,7 +69,7 @@ public class Ledger {
         // Display deposits in the ledger
 
         // Iterate through transactions and display those that match amount > 0
-        for(Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for(Transaction t : TRANSACTION) {
             if(t.getAmount() > 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -82,7 +81,7 @@ public class Ledger {
         // Display payments in the ledger
 
         // Iterate through transactions and display those that match amount < 0
-        for(Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for(Transaction t : TRANSACTION) {
             if(t.getAmount() < 0) {
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(),
@@ -100,6 +99,7 @@ public class Ledger {
             System.out.println("\t(3) - Year To Date");
             System.out.println("\t(4) - Previous Year");
             System.out.println("\t(5) - Search by Vendor");
+            System.out.println("\t(6) - Custom Search");
             System.out.println("\t(0) - Back to the ledger screen");
             System.out.print("Enter # Choice: ");
             int userInput = SCANNER.nextInt();
@@ -122,6 +122,9 @@ public class Ledger {
                 case 5:
                     searchByVendorReport();
                     break;
+                case 6:
+                    customSearch();
+                    break;
                 case 0:
                     display();
                     return;
@@ -139,7 +142,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those in the current month
-        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for (Transaction t : TRANSACTION) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the current month
@@ -168,7 +171,7 @@ public class Ledger {
         System.out.println("***************************");
 
         // Iterate through transactions and display those in the previous month
-        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for (Transaction t : TRANSACTION) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the previous month
@@ -193,7 +196,7 @@ public class Ledger {
         System.out.println("************************");
 
         // Iterate through transactions and display those in the current year
-        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for (Transaction t : TRANSACTION) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the current year
@@ -220,7 +223,7 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those in the previous year
-        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for (Transaction t : TRANSACTION) {
             LocalDate transactionDate = t.getDate();
 
             // Check if the transaction occurred in the previous year
@@ -244,10 +247,63 @@ public class Ledger {
         System.out.println("*************************");
 
         // Iterate through transactions and display those that match the vendor
-        for (Transaction t : TRANSACTIONS_ARRAYLIST) {
+        for (Transaction t : TRANSACTION) {
             if (t.getVendor().equalsIgnoreCase(searchVendor)) {
                 // Display transaction details
                 System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f%n",
+                        t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            }
+        }
+    }
+    public static void customSearch() {
+        System.out.println("Custom Search - Enter search criteria (leave empty to skip):");
+        System.out.print("Start Date (yyyy-MM-dd): ");
+        String startDateStr = SCANNER.nextLine().trim();
+        System.out.print("End Date (yyyy-MM-dd): ");
+        String endDateStr = SCANNER.nextLine().trim();
+        System.out.print("Description: ");
+        String description = SCANNER.nextLine().trim();
+        System.out.print("Vendor: ");
+        String vendor = SCANNER.nextLine().trim();
+        System.out.print("Amount: ");
+        String amountStr = SCANNER.nextLine().trim();
+
+        // Parse user input for date and amount
+        LocalDate startDate = startDateStr.isEmpty() ? null : LocalDate.parse(startDateStr);
+        LocalDate endDate = endDateStr.isEmpty() ? null : LocalDate.parse(endDateStr);
+        double amount = amountStr.isEmpty() ? Double.NaN : Double.parseDouble(amountStr);
+
+        // Filter and display ledger entries based on user input
+        filterAndDisplay(startDate, endDate, description, vendor, amount);
+    }
+
+    public static void filterAndDisplay(LocalDate startDate, LocalDate endDate, String description, String vendor, double amount) {
+        System.out.println("Custom Search Results:");
+        for (Transaction t : TRANSACTION) {
+            // Check if the transaction matches the user-specified criteria.
+
+            // Check if the transaction date is within the specified date range, if provided.
+            boolean matchCriteria = startDate == null || endDate == null || (!t.getDate().isBefore(startDate) && !t.getDate().isAfter(endDate));
+
+            // If a transaction does not match the specified description, set the matchCriteria flag to false.
+            if (!description.isEmpty() && !t.getDescription().equalsIgnoreCase(description)) {
+                matchCriteria = false;
+            }
+
+            // If a transaction does not match the specified vendor, set the matchCriteria flag to false.
+            if (!vendor.isEmpty() && !t.getVendor().equalsIgnoreCase(vendor)) {
+                matchCriteria = false;
+            }
+
+            // If a transaction does not match the specified amount, set the matchCriteria flag to false.
+            if (!Double.isNaN(amount) && t.getAmount() != amount) {
+                matchCriteria = false;
+            }
+
+            // Display the transaction as a search result only if it meets all specified search criteria.
+            // Transactions that do not meet the criteria are excluded from the results.
+            if (matchCriteria) {
+                System.out.printf("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount $%.2f\n",
                         t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
             }
         }
